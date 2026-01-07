@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SAFECORD — Static</title>
+    <link rel="stylesheet" href="./style.css">
+    <meta name="description" content="SAFECORD — lightweight static build" />
+  </head>
+  <body>
+    <div id="root">
+      <!-- Static fallback UI so the page isn't blank while JS loads -->
+      <div class="app">
+        <aside class="sidebar">
+          <div class="brand"><span class="mark"></span> SAFECORD</div>
+          <nav class="nav">
+            <button data-view="home" class="active">Home</button>
+            <button data-view="servers">Servers</button>
+            <button data-view="profile">Profile</button>
+            <button data-view="admin">Admin</button>
+          </nav>
+          <div class="muted footer">Static demo • Files served from repo root</div>
+        </aside>
+
+        <main class="main">
+          <div class="topbar">
+            <div class="logo"><span class="mark"></span><div class="title">SAFECORD</div></div>
+            <div class="small">Static demo</div>
+          </div>
+
+          <div id="content">
+            <div class="card">
+              <h2>Sign in to SAFECORD</h2>
+              <form>
+                <input type="text" id="login-username" placeholder="username">
+                <input type="password" id="login-pass" placeholder="password">
+                <div><button class="cta" type="button" id="login-btn">Sign in</button></div>
+              </form>
+              <div class="footer muted">First run default admin: username <strong>admin</strong> password <strong>admin</strong></div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="./script.js" defer></script>
+  </body>
+</html>
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>SAFECORD (International)</title>
+    </head>
+
+    <body>
+      <div id="root"></div>
+      <script type="module" src="/src/main.tsx"></script>
+    </body>
+  </html>
+  

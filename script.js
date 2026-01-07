@@ -82,7 +82,10 @@
   // Initial start
   (function start(){ // if session present load app, else login
     const s = session(); if(s){ renderApp(); } else { // show login
-      ROOT.innerHTML=''; ROOT.appendChild(renderLogin()); }
+        ROOT.innerHTML=''; ROOT.appendChild(renderLogin()); }
+      // Attach handler for static login button (present in index.html) so page is usable before hydration
+      const staticBtn = document.getElementById('login-btn');
+      if(staticBtn){ staticBtn.addEventListener('click', async ()=>{ const u=document.getElementById('login-username').value.trim(); const p=document.getElementById('login-pass').value; try{ await login(u,p); renderApp(); }catch(e){ alert('Login failed: '+e) } }); }
   })();
 
 })();
