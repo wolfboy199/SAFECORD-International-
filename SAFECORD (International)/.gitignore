@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+.env.*
+.DS_Store
+/.venv
+/coverage
+npm-debug.log*
+pnpm-lock.yaml
+package-lock.json
+.idea/
+.vscode/
+*.log
+/.wrangler/
+/.terraform/
+secrets/

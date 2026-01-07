@@ -1,0 +1,11 @@
+name = "safecord-worker"
+compatibility_date = "2026-01-01"
+
+type = "javascript"
+
+[env.production]
+route = ""
+
+[[kv_namespaces]]
+binding = "KV_STORE"
+id = "" # fill after creating namespace with `wrangler kv:namespace create KV_STORE`
