@@ -627,7 +627,6 @@ export function AdminPanel({ username, onClose }: AdminPanelProps) {
         }
       } else if (cmd === '/code') {
         const response = await fetch(fn('code'), { method: 'GET', headers: { 'X-Username': username } });
-        
         const data = await response.json();
         if (data.success) {
           setCommandOutput(prev => [...prev, `✓ Access granted. Source code:`]);
@@ -635,6 +634,59 @@ export function AdminPanel({ username, onClose }: AdminPanelProps) {
         } else {
           setCommandOutput(prev => [...prev, `✗ Error: ${data.error}`]);
         }
+
+      } else if (cmd === '/prompt') {
+        // Developer-only AI prompt command: /prompt <your prompt>
+        const promptText = parts.slice(1).join(' ').trim();
+        if (!promptText) {
+          setCommandOutput(prev => [...prev, 'Error: Usage: /prompt <prompt text>']);
+        } else {
+          try {
+            const profRes = await fetch(fn(`profile/${username}`));
+            let rank = 0;
+            if (profRes.ok) {
+              const pd = await profRes.json();
+              rank = (pd?.profile?.rank) || 0;
+            }
+            if (rank !== 5) {
+              setCommandOutput(prev => [...prev, '✗ Error: /prompt is developer-only (Rank 5)']);
+            } else {
+              setCommandOutput(prev => [...prev, '⏳ Sending prompt to AI...']);
+              const res = await fetch(fn('admin/prompt'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ adminUsername: username, prompt: promptText }),
+              });
+              const d = await res.json().catch(() => ({ success: false, error: 'Invalid JSON response' }));
+              if (d.success) {
+                setCommandOutput(prev => [...prev, `✓ AI result: ${d.result || d.output || '[no output]'}`]);
+              } else {
+                setCommandOutput(prev => [...prev, `✗ AI error: ${d.error || 'unknown'}`]);
+              }
+            }
+          } catch (err) {
+            setCommandOutput(prev => [...prev, `✗ Error: ${String(err)}`]);
+          }
+        }
+
+      } else if (cmd === '/test_updates') {
+        // Send publish update to testers only
+        try {
+          const r = await fetch(fn('admin/publish-update'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ adminUsername: username, target: 'testers' }),
+          });
+          const dd = await r.json();
+          if (dd.success) {
+            setCommandOutput(prev => [...prev, `✓ ${dd.message || 'Published update to testers'} `]);
+          } else {
+            setCommandOutput(prev => [...prev, `✗ Error: ${dd.error || 'unknown'}`]);
+          }
+        } catch (err) {
+          setCommandOutput(prev => [...prev, `✗ Error: ${String(err)}`]);
+        }
+
       } else {
         setCommandOutput(prev => [...prev, `Error: Unknown command "${cmd}"`]);
       }

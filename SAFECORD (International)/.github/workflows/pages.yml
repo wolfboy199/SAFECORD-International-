@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -22,10 +22,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          directory: build
-          projectName: ${{ secrets.CF_PAGES_PROJECT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
